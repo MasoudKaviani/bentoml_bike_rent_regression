@@ -9,9 +9,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN pip install -U bentoml
 
-COPY . /bento
+COPY build_bento.py /bento
+COPY service.py /bento
+COPY bentofile.yaml /bento
 
 RUN python build_bento.py
 RUN bentoml build
 
-ENTRYPOINT ["bentoml", "serve"]
+CMD ["bentoml", "serve"]
