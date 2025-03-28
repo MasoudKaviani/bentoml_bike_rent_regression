@@ -12,6 +12,7 @@ RUN pip install -U bentoml
 COPY build_bento.py /bento
 COPY service.py /bento
 COPY bentofile.yaml /bento
+COPY data /bento/
 
 RUN python build_bento.py
 RUN bentoml build
