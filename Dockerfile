@@ -7,6 +7,8 @@ COPY requirements.txt /bento
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip install -U bentoml
+
 COPY . /bento
 
 RUN python build_bento.py
