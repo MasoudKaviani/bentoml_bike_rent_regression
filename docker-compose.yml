@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  bike_sharing_api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - BENTOML_CONFIG=/bento/bentoml_config.yml
+    volumes:
+      - ./:/bento
+    command: ["--workers", "2", "--timeout", "60", "bike_sharing_regressor:latest"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/readyz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Add a Prometheus/Grafana for monitoring
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - bike_sharing_api
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  grafana-storage:
