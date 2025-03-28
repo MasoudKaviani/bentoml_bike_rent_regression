@@ -13,7 +13,6 @@ services:
       timeout: 10s
       retries: 3
 
-  # Optional: Add a Prometheus/Grafana for monitoring
   prometheus:
     image: prom/prometheus
     ports:
